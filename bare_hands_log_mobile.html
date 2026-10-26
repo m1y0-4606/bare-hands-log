@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101311">
+<title>BARE HANDS LOG</title>
+<style>
+:root{--bg:#101311;--panel:#191e1b;--panel2:#232b25;--line:#354039;--text:#f3f6f1;--muted:#a9b5ac;--accent:#c8f36b;--mint:#8bdcc2;--warn:#f4d27a;--red:#ff958a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.45;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+header{padding:22px 16px 18px;background:radial-gradient(ellipse at 80% 0%,#2c3a2b,transparent 58%);border-bottom:1px solid var(--line)}
+.wrap{max-width:760px;margin:auto}.eyebrow{font-size:10px;letter-spacing:.19em;font-weight:800;color:var(--accent)}h1{font-size:26px;letter-spacing:-.04em;margin:5px 0}header p{font-size:12px;color:var(--muted);margin:0}
+main{max-width:760px;margin:0 auto;padding:16px 13px 28px}.view{display:none}.view.active{display:block}
+h2{font-size:19px;margin:4px 0 12px}h3{font-size:15px;margin:0 0 8px}.sub{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:11px}.metric-label{font-size:11px;color:var(--muted)}.metric{font-size:28px;font-weight:850;letter-spacing:-.04em;margin:5px 0 1px}.metric small{font-size:12px;color:var(--muted)}
+.section{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:22px 0 10px}.section h2{margin:0;font-size:17px}
+button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}
+.primary,.secondary,.danger,.navbtn{border-radius:11px;min-height:44px;padding:10px 13px;font-weight:750;border:1px solid var(--line)}
+.primary{background:var(--accent);color:#18200f;border-color:var(--accent)}.secondary{background:var(--panel2);color:var(--text)}.danger{background:#352421;color:var(--red);border-color:#62413b}.wide{width:100%}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}.quick button{min-height:62px;text-align:left;padding:12px 14px}.quick strong{display:block;font-size:14px}.quick span{font-size:11px;opacity:.8}
+form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;color:var(--muted);font-weight:700}
+input,select,textarea{width:100%;min-width:0;background:#101512;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:16px}textarea{min-height:85px;resize:vertical}
+.pills{display:flex;gap:7px;flex-wrap:wrap}.pill{border-radius:99px;background:#2b352d;color:var(--accent);padding:4px 8px;font-size:11px;display:inline-block}.pill.done{color:var(--mint);background:#20382f}.pill.try{color:var(--warn);background:#3a3424}
+.list{display:grid;gap:9px}.item{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px}.itemtop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.item h3{margin:0 0 5px}.item p{font-size:12px;color:var(--muted);margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}.itemactions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.itemactions button{min-height:39px;padding:8px 10px;font-size:12px}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}.toolbar .full{grid-column:1/-1}
+.groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.group{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px;color:var(--text);min-height:118px;min-width:0}.group.main{border-color:#55693a;background:linear-gradient(160deg,#222b1e,var(--panel) 70%)}.group.all{grid-column:1/-1;min-height:0}
+.gname{font-size:17px;font-weight:800}.gsub{font-size:11px;color:var(--muted)}.gcount{font-size:26px;font-weight:850;letter-spacing:-.04em;margin-top:auto}.gcount small{font-size:12px;color:var(--muted);font-weight:700}.gbar{display:block;width:100%;height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:4px}.gbar i{display:block;height:100%;background:var(--accent)}
+.backbtn{min-height:40px;padding:8px 12px;font-size:13px}
+canvas{width:100%;height:190px;display:block}.legend{font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:20px;text-align:center;color:var(--muted);font-size:13px}
+.bottomnav{position:fixed;z-index:10;bottom:0;left:0;right:0;padding:7px 8px calc(7px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:rgba(18,22,19,.97);border-top:1px solid var(--line);backdrop-filter:blur(12px)}
+.navbtn{min-height:54px;padding:5px 2px;background:transparent;border-color:transparent;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.navbtn .ico{font-size:19px;line-height:1.1}.navbtn.active{color:var(--accent);background:#293326}
+.notice{font-size:12px;color:#d7e3d8;background:#1d2820;border-left:3px solid var(--accent);padding:11px;border-radius:0 9px 9px 0;margin:10px 0}
+hr{border:0;border-top:1px solid var(--line);margin:13px 0}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.metric{font-size:25px}.charts{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">PERSONAL BOULDERING TRACKER</div><h1>BARE HANDS LOG<span style="color:var(--accent)">.</span></h1><p>登った記録を、次の完登につなげる。</p></div></header>
+<main>
+<section id="home" class="view active">
+<div class="grid">
+<div class="card"><div class="metric-label">3級・2級 完登率</div><div class="metric" id="mainRate">—</div><div class="sub" id="mainSub">課題を登録してください</div></div>
+<div class="card"><div class="metric-label">今月の完登数</div><div class="metric" id="monthSends">0<small> 課題</small></div><div class="sub">今月初めて完登した課題</div></div>
+<div class="card"><div class="metric-label">累計トライ</div><div class="metric" id="triesTotal">0<small> 回</small></div><div class="sub">登録課題のトライ数</div></div>
+<div class="card"><div class="metric-label">完登済み課題</div><div class="metric" id="sendsTotal">0<small> 課題</small></div><div class="sub" id="registeredTotal">登録 0 課題</div></div>
+</div>
+<div class="quick"><button class="primary" onclick="show('session')"><strong>＋ セッションを記録</strong><span>今日の登攀・感触・目標</span></button><button class="secondary" onclick="show('add')"><strong>＋ 課題を登録</strong><span>新しい課題を追加</span></button></div>
+<div class="section"><h2>成長グラフ</h2><span class="sub">直近6か月</span></div>
+<div class="card"><h3>月別の完登数</h3><canvas id="monthly"></canvas><div class="legend"><span><i class="dot" style="background:var(--accent)"></i>完登課題</span></div></div>
+<div class="card"><h3>グレード別完登率</h3><canvas id="grades"></canvas><div class="legend"><span><i class="dot" style="background:var(--accent)"></i>3級</span><span><i class="dot" style="background:var(--mint)"></i>2級</span></div></div>
+<div class="section"><h2>最近の記録</h2><button class="secondary" onclick="show('history')">すべて見る</button></div><div id="recent" class="list"></div>
+<div class="notice">完登率は「完登した課題数 ÷ 登録課題数」です。3級・2級の課題を登録してから分析できます。</div>
+</section>
+
+<section id="challenges" class="view">
+<div id="groupMenu">
+<div class="section"><h2>課題一覧</h2><span id="challengeTotal" class="sub">登録 0件</span></div>
+<div id="groupTiles" class="groups"></div>
+</div>
+<div id="groupList" style="display:none">
+<button class="secondary backbtn" onclick="openGroup('')">‹ グレード選択に戻る</button>
+<div class="section"><h2 id="groupTitle">課題</h2><span id="challengeCount" class="sub">0件</span></div>
+<div class="toolbar"><input id="search" placeholder="課題名・メモを検索"><select id="fStatus"><option value="">すべての状態</option><option>未挑戦</option><option>挑戦中</option><option>完登</option></select></div>
+<div id="challengeList" class="list"></div>
+</div>
+</section>
+
+<section id="session" class="view">
+<h2>セッションを記録</h2>
+<div class="card"><form id="sessionForm">
+<div class="field"><label for="sDate">日付</label><input id="sDate" type="date" required></div>
+<div class="field"><label for="sDuration">登った時間（分）</label><input id="sDuration" type="number" min="0" inputmode="numeric" placeholder="例：120"></div>
+<div class="field full"><label for="sNote">今日のメモ</label><textarea id="sNote" placeholder="調子、できたムーブ、苦手だった動き、次回の目標"></textarea></div>
+<div class="field full"><button class="primary wide" type="submit">セッションを保存</button></div>
+</form></div>
+<div class="section"><h2>課題のトライを記録</h2></div>
+<div class="card"><form id="tryForm">
+<div class="field full"><label for="tChallenge">課題</label><select id="tChallenge" required></select></div>
+<div class="field full"><label for="tDate">日付（過去の日付も選べます）</label><input id="tDate" type="date" required></div>
+<div class="field"><label for="tCount">今回のトライ数</label><input id="tCount" type="number" min="1" value="1" required inputmode="numeric"></div>
+<div class="field"><label for="tResult">結果</label><select id="tResult"><option>継続</option><option>完登</option></select></div>
+<div class="field full"><label for="tMemo">今回のメモ</label><textarea id="tMemo" placeholder="例：右足を高く置くと核心を越えられた"></textarea></div>
+<div class="field full"><button class="primary wide" type="submit">トライ履歴を保存</button></div>
+</form></div>
+<div class="notice">トライ履歴は課題ごとに日付・回数・結果・メモを保存します。完登にすると課題の状態も完登済みになります。</div>
+</section>
+
+<section id="history" class="view">
+<div class="section"><h2>挑戦履歴</h2></div><div id="historyList" class="list"></div>
+<div class="section"><h2>セッション履歴</h2></div><div id="sessionList" class="list"></div>
+</section>
+
+<section id="settings" class="view">
+<h2>データ管理</h2>
+<div class="card"><h3>バックアップ</h3><p class="sub">課題・トライ履歴・セッションをJSONファイルに書き出します。定期的な保存をおすすめします。</p><button class="primary wide" onclick="exportData()">JSONバックアップを書き出す</button></div>
+<div class="card"><h3>バックアップから復元</h3><p class="sub">以前に書き出したJSONファイルを読み込みます。現在のデータは読み込んだ内容で置き換わります。</p><input id="importFile" type="file" accept=".json,application/json"><button class="secondary wide" style="margin-top:10px" onclick="importData()">バックアップを復元</button></div>
+<div class="card"><h3>保存データの注意</h3><p class="sub">このブラウザの端末内に保存します。ブラウザのデータ削除や端末変更で失われる場合があります。シークレットモードは使わず、定期的にバックアップしてください。</p><hr><button class="danger wide" onclick="wipeData()">すべてのデータを削除</button></div>
+</section>
+
+<section id="add" class="view">
+<h2>課題を登録</h2><div class="card"><form id="challengeForm">
+<div class="field full"><label for="cName">課題名・壁の番号 *</label><input id="cName" required placeholder="例：青テープ右壁 / M-07"></div>
+<div class="field"><label for="cType">種類 *</label><select id="cType"><option>テープ</option><option>マンスリー</option></select></div>
+<div class="field"><label for="cGrade">グレード・難易度 *</label><select id="cGrade"></select></div>
+<div class="field full" id="monthField" style="display:none"><label for="cMonth">マンスリー開催月</label><input id="cMonth" type="month"></div>
+<div class="field full"><label for="cMemo">最初のメモ</label><textarea id="cMemo" placeholder="核心、保持、足位置、次回試すこと"></textarea></div>
+<div class="field full"><button class="primary wide" type="submit">課題を登録する</button></div>
+</form></div><div class="notice">マンスリーは開催月が変わったら、同じ番号でも別の課題として登録してください。</div>
+</section>
+</main>
+<nav class="bottomnav">
+<button class="navbtn active" data-view="home"><span class="ico">⌂</span>ホーム</button>
+<button class="navbtn" data-view="challenges"><span class="ico">▦</span>課題一覧</button>
+<button class="navbtn" data-view="session"><span class="ico">＋</span>記録する</button>
+<button class="navbtn" data-view="settings"><span class="ico">⚙</span>データ管理</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id),today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},monthNow=()=>today().slice(0,7);
+const KEY='bareHandsLogMobileV2',FORMAT=3;
+const TAPE_GRADES=['10級','9級','8級','7級','6級','5級','4級','3級','2級','1級','初段','2段'],MONTHLY_GRADES=Array.from({length:20},(_,i)=>'難易度 '+(i+1));
+const TYPES=['テープ','マンスリー'],STATUSES=['未挑戦','挑戦中','完登'],RESULTS=['継続','完登'];
+const newId=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2,9);
+const byDateDesc=(a,b)=>a.date<b.date?1:a.date>b.date?-1:0;
+let data={challenges:[],sessions:[],history:[]};
+try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old)data=old;else{const a=JSON.parse(localStorage.getItem('bh_challenges')||'[]'),b=JSON.parse(localStorage.getItem('bh_sessions')||'[]');data.challenges=a.map(c=>({...c,history:c.history||c.logs||[]}));data.sessions=b;data.history=[]}}catch(e){}
+// 課題自身の履歴（challenge.history）と全体の履歴（data.history）を同じidで対応づけ、片方にしかない記録をもう片方に補う
+function linkHistories(d){
+['challenges','sessions','history'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=[]});
+let byId=new Map(d.challenges.map(c=>[c.id,c])),same=(a,b)=>a.date===b.date&&+a.tries===+b.tries&&a.result===b.result&&(a.memo||'')===(b.memo||'');
+d.challenges.forEach(c=>{c.history=Array.isArray(c.history)?c.history:[];c.history.forEach(h=>{if(!h.id)h.id=newId()})});
+let linked=new Set(d.history.filter(g=>g.id).map(g=>g.id));
+d.history.forEach(g=>{let c=byId.get(g.challengeId);if(!c){if(!g.id)g.id=newId();return}if(g.id&&c.history.some(h=>h.id===g.id))return;let m=c.history.find(h=>!linked.has(h.id)&&same(h,g));if(m)g.id=m.id;else{g.id=g.id||newId();c.history.push({id:g.id,date:g.date,tries:g.tries,result:g.result,memo:g.memo||''})}linked.add(g.id)});
+d.challenges.forEach(c=>{c.history.forEach(h=>{if(!linked.has(h.id)){d.history.push({...h,challengeId:c.id,challengeName:c.name,grade:c.grade,type:c.type});linked.add(h.id)}});c.history.sort(byDateDesc)});
+d.history.sort(byDateDesc)}
+linkHistories(data);
+const challenges=()=>data.challenges;
+// 1回分の挑戦を、同じidで課題自身の履歴と全体の履歴の両方に記録する
+function addEntry(c,e){e.id=newId();c.history.unshift(e);c.history.sort(byDateDesc);data.history.unshift({...e,challengeId:c.id,challengeName:c.name,grade:c.grade,type:c.type});data.history.sort(byDateDesc);if(!c.first||e.date<c.first)c.first=e.date}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));renderAll()}catch(e){alert('保存できませんでした。端末の空き容量やブラウザ設定を確認してください。')}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id==='add')gradeOptions();if(id==='session')fillTrySelect();if(id==='history')renderHistory();if(id==='challenges')renderChallenges();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{if(b.dataset.view==='challenges')group='';show(b.dataset.view)});
+function gradeOptions(){let type=$('cType').value,sel=$('cGrade');sel.innerHTML='';let vals=type==='テープ'?TAPE_GRADES:MONTHLY_GRADES;vals.forEach(v=>sel.add(new Option(v,v)));$('monthField').style.display=type==='マンスリー'?'flex':'none'}
+$('cType').onchange=gradeOptions;
+$('challengeForm').onsubmit=e=>{e.preventDefault();let type=$('cType').value,c={id:newId(),name:$('cName').value.trim(),type,grade:$('cGrade').value,month:type==='マンスリー'?($('cMonth').value||monthNow()):'',status:'未挑戦',tries:0,first:'',send:'',memo:$('cMemo').value.trim(),history:[]};data.challenges.push(c);group=groupOf(c);e.target.reset();$('cType').value='テープ';gradeOptions();persist();show('challenges')};
+$('sessionForm').onsubmit=e=>{e.preventDefault();data.sessions.unshift({id:String(Date.now()),date:$('sDate').value||today(),duration:Number($('sDuration').value)||0,note:$('sNote').value.trim()});e.target.reset();$('sDate').value=today();persist();show('history')};
+$('tryForm').onsubmit=e=>{e.preventDefault();let c=challenges().find(x=>x.id===$('tChallenge').value);if(!c)return;let date=$('tDate').value||today();if(date>today()){alert('未来の日付は記録できません。');return}let n=Math.max(1,Number($('tCount').value)||1),result=$('tResult').value;addEntry(c,{date,tries:n,result,memo:$('tMemo').value.trim()});c.tries=(Number(c.tries)||0)+n;if(result==='完登'){if(c.status!=='完登'||!c.send||date<c.send)c.send=date;c.status='完登'}else if(c.status!=='完登')c.status='挑戦中';e.target.reset();$('tCount').value=1;$('tDate').value=today();persist();show('history')};
+function mainGrade(c){return c.type==='テープ'&&['3級','2級'].includes(c.grade)}
+function rate(arr){return arr.length?Math.round(arr.filter(c=>c.status==='完登').length/arr.length*100):null}
+function renderHome(){let m=challenges().filter(mainGrade),r=rate(m);$('mainRate').textContent=r===null?'—':r+'%';$('mainSub').textContent=m.filter(c=>c.status==='完登').length+' / '+m.length+' 課題';$('monthSends').innerHTML=challenges().filter(c=>c.status==='完登'&&c.send&&c.send.slice(0,7)===monthNow()).length+'<small> 課題</small>';$('triesTotal').innerHTML=challenges().reduce((s,c)=>s+(+c.tries||0),0)+'<small> 回</small>';$('sendsTotal').innerHTML=challenges().filter(c=>c.status==='完登').length+'<small> 課題</small>';$('registeredTotal').textContent='登録 '+challenges().length+' 課題';drawMonthly();drawGrades();let entries=data.history.slice(0,3);$('recent').innerHTML=entries.length?entries.map(h=>`<div class="item"><div class="itemtop"><div><h3>${esc(h.challengeName)}</h3><span class="pill">${esc(h.grade)}</span><span class="pill ${h.result==='完登'?'done':'try'}">${esc(h.result)}</span></div><span class="sub">${esc(h.date)}</span></div><p>${h.tries}トライ${h.memo?' · '+esc(h.memo):''}</p></div>`).join(''):'<div class="empty">記録はまだありません。まず課題を登録しましょう。</div>'}
+function canvasInit(el){let w=el.clientWidth||300,h=190,d=window.devicePixelRatio||1;el.width=w*d;el.height=h*d;let c=el.getContext('2d');c.scale(d,d);return{c,w,h}}
+function drawMonthly(){let {c,w,h}=canvasInit($('monthly'));c.clearRect(0,0,w,h);let months=[];for(let i=5;i>=0;i--){let d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}let vals=months.map(m=>challenges().filter(x=>x.status==='完登'&&x.send&&x.send.slice(0,7)===m).length),max=Math.max(3,...vals),l=27,t=12,b=29,ph=h-t-b,pw=w-l-8;c.font='10px system-ui';for(let i=0;i<4;i++){let y=t+ph*i/3;c.strokeStyle='#354039';c.beginPath();c.moveTo(l,y);c.lineTo(w-5,y);c.stroke();c.fillStyle='#a9b5ac';c.fillText(String(Math.round(max*(1-i/3))),2,y+3)}let bw=Math.min(26,pw/8);vals.forEach((v,i)=>{let x=l+(i+.5)*pw/6-bw/2,bar=ph*v/max;c.fillStyle='#c8f36b';c.beginPath();c.roundRect(x,t+ph-bar,bw,Math.max(0,bar),4);c.fill();c.fillStyle='#a9b5ac';c.textAlign='center';c.fillText(months[i].slice(5)+'月',x+bw/2,h-8);if(v)c.fillText(v,x+bw/2,t+ph-bar-5)});c.textAlign='left'}
+function drawGrades(){let {c,w,h}=canvasInit($('grades'));c.clearRect(0,0,w,h);['3級','2級'].forEach((g,i)=>{let a=challenges().filter(x=>x.type==='テープ'&&x.grade===g),r=rate(a),y=22+i*78;c.fillStyle='#a9b5ac';c.font='12px system-ui';c.fillText(g,4,y);c.fillStyle='#354039';c.beginPath();c.roundRect(4,y+10,w-10,13,6);c.fill();if(r!==null){c.fillStyle=i?'#8bdcc2':'#c8f36b';c.beginPath();c.roundRect(4,y+10,(w-10)*r/100,13,6);c.fill()}c.fillStyle='#f3f6f1';c.font='bold 18px system-ui';c.fillText(r===null?'—':r+'%',4,y+49);c.fillStyle='#a9b5ac';c.font='11px system-ui';c.fillText(a.filter(x=>x.status==='完登').length+' / '+a.length+'課題',w-82,y+49)})}
+// 課題一覧のグレード区分。key が空のときはグレード選択画面を出す
+const GROUPS=[
+{key:'3級',label:'3級',sub:'テープ',main:true,test:c=>c.type==='テープ'&&c.grade==='3級'},
+{key:'2級',label:'2級',sub:'テープ',main:true,test:c=>c.type==='テープ'&&c.grade==='2級'},
+{key:'monthly',label:'マンスリー',sub:'難易度 1〜20',test:c=>c.type==='マンスリー'},
+{key:'other',label:'その他のテープ',sub:'3級・2級以外',test:c=>c.type==='テープ'&&!['3級','2級'].includes(c.grade)},
+{key:'all',label:'すべての課題',test:()=>true}];
+let group='';
+const groupOf=c=>(GROUPS.find(g=>g.key!=='all'&&g.test(c))||{key:'all'}).key;
+const gradeRank=c=>c.type==='テープ'?TAPE_GRADES.indexOf(c.grade):parseInt(String(c.grade).replace(/\D/g,''))||0;
+// マンスリーは新しい開催月→難易度順、その他のテープはグレード順、それ以外は登録順
+function sortGroup(key,arr){if(key==='monthly')arr.sort((a,b)=>(b.month||'').localeCompare(a.month||'')||gradeRank(a)-gradeRank(b));if(key==='other')arr.sort((a,b)=>gradeRank(a)-gradeRank(b));return arr}
+function openGroup(key){group=key;$('search').value='';$('fStatus').value='';renderChallenges();window.scrollTo({top:0})}
+function renderChallenges(){$('challengeTotal').textContent='登録 '+challenges().length+'件';$('groupTiles').innerHTML=GROUPS.map(g=>{let a=challenges().filter(g.test),done=a.filter(c=>c.status==='完登').length,r=rate(a)||0;return `<button class="group${g.main?' main':''}${g.key==='all'?' all':''}" onclick="openGroup('${g.key}')"><span class="gname">${g.label}</span>${g.sub?`<span class="gsub">${g.sub}</span>`:''}<span class="gcount">${a.length}<small> 課題${a.length?' · '+r+'%':''}</small></span><span class="gsub">完登 ${done} · 挑戦中 ${a.filter(c=>c.status==='挑戦中').length}</span><span class="gbar"><i style="width:${r}%"></i></span></button>`}).join('');
+let g=GROUPS.find(x=>x.key===group);$('groupMenu').style.display=g?'none':'block';$('groupList').style.display=g?'block':'none';if(!g){fillTrySelect();return}
+let q=$('search').value.toLowerCase(),s=$('fStatus').value;let arr=sortGroup(g.key,challenges().filter(c=>g.test(c)&&(!q||(c.name+' '+c.memo).toLowerCase().includes(q))&&(!s||c.status===s)));$('groupTitle').textContent=g.label;$('challengeCount').textContent=arr.length+'件';$('challengeList').innerHTML=arr.length?arr.map(c=>`<div class="item"><div class="itemtop"><div><h3>${esc(c.name)}</h3><span class="pill">${esc(c.type)}</span><span class="pill">${esc(c.grade)}</span><span class="pill ${c.status==='完登'?'done':c.status==='挑戦中'?'try':''}">${esc(c.status)}</span>${c.month?`<span class="pill">${esc(c.month)}</span>`:''}</div></div><p>累計 ${c.tries||0} トライ${c.send?' · 完登 '+esc(c.send):''}${c.memo?'<br>'+esc(c.memo):''}</p><div class="itemactions"><button class="secondary" onclick="quickTry('${c.id}')">＋1トライ</button><button class="secondary" onclick="markDone('${c.id}')">${c.status==='完登'?'完登取消':'完登にする'}</button><button class="secondary" onclick="memoEdit('${c.id}')">メモ編集</button><button class="danger" onclick="removeChallenge('${c.id}')">削除</button></div></div>`).join(''):`<div class="empty">${q||s?'条件に合う課題がありません。':'この区分の課題はまだありません。'}</div>`;fillTrySelect()}
+function fillTrySelect(){let s=$('tChallenge'),old=s.value;s.innerHTML='';if(!challenges().length){s.add(new Option('先に課題を登録してください',''));return}challenges().forEach(c=>s.add(new Option(`${c.name} · ${c.grade}`,c.id)));if(challenges().some(c=>c.id===old))s.value=old}
+function quickTry(id){let c=challenges().find(x=>x.id===id);if(!c)return;addEntry(c,{date:today(),tries:1,result:'継続',memo:'クイック記録'});c.tries=(+c.tries||0)+1;if(c.status!=='完登')c.status='挑戦中';persist()}
+// 完登取消では記録を消さず、その課題の「完登」記録を両方の履歴で「継続」に戻す（トライ数は残す）
+function markDone(id){let c=challenges().find(x=>x.id===id);if(!c)return;if(c.status==='完登'){c.status='挑戦中';c.send='';let ids=new Set();c.history.forEach(h=>{if(h.result==='完登'){h.result='継続';ids.add(h.id)}});data.history.forEach(h=>{if(ids.has(h.id))h.result='継続'})}else{let n=+c.tries?0:1;addEntry(c,{date:today(),tries:n,result:'完登',memo:'課題一覧から完登登録'});c.tries=(+c.tries||0)+n;c.status='完登';c.send=today()}persist()}
+function memoEdit(id){let c=challenges().find(x=>x.id===id),m=prompt('課題メモ',c.memo||'');if(m!==null){c.memo=m;persist()}}
+function removeChallenge(id){let c=challenges().find(x=>x.id===id);if(c&&confirm('「'+c.name+'」を削除しますか？関連する履歴も一覧から参照しにくくなります。')){data.challenges=data.challenges.filter(x=>x.id!==id);persist()}}
+function renderHistory(){let h=data.history;$('historyList').innerHTML=h.length?h.map(x=>`<div class="item"><div class="itemtop"><div><h3>${esc(x.challengeName)}</h3><span class="pill">${esc(x.grade)}</span><span class="pill ${x.result==='完登'?'done':'try'}">${esc(x.result)}</span></div><span class="sub">${esc(x.date)}</span></div><p>${x.tries}トライ${x.memo?' · '+esc(x.memo):''}</p></div>`).join(''):'<div class="empty">課題の挑戦履歴はまだありません。</div>';$('sessionList').innerHTML=data.sessions.length?data.sessions.map(s=>`<div class="item"><div class="itemtop"><h3>${esc(s.date)} · ${s.duration?s.duration+'分':'時間未記録'}</h3><button class="danger" onclick="deleteSession('${s.id}')">削除</button></div><p>${esc(s.note||'メモなし')}</p></div>`).join(''):'<div class="empty">セッション履歴はまだありません。</div>'}
+function deleteSession(id){data.sessions=data.sessions.filter(s=>s.id!==id);persist()}
+function renderAll(){renderHome();renderChallenges();if($('history').classList.contains('active'))renderHistory()}
+['search','fStatus'].forEach(id=>$(id).addEventListener('input',renderChallenges));
+function exportData(){let blob=new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString(),formatVersion:FORMAT},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bare-hands-log-backup-'+today()+'.json';a.click();URL.revokeObjectURL(url)}
+const DATE_RE=/^\d{4}-\d{2}-\d{2}$/,MONTH_RE=/^\d{4}-\d{2}$/,isObj=v=>!!v&&typeof v==='object'&&!Array.isArray(v),isCount=v=>v===undefined||v===''||(Number.isFinite(Number(v))&&Number(v)>=0),isText=v=>v===undefined||v===null||typeof v==='string';
+// バックアップJSONの中身を1件ずつ確かめ、問題点の一覧を返す（空なら正常）
+function validateBackup(x){
+let errs=[],err=m=>errs.push(m);
+if(!isObj(x))return['JSONの中身がバックアップの形式ではありません'];
+if(x.formatVersion!==undefined&&!(Number.isInteger(x.formatVersion)&&x.formatVersion>=1&&x.formatVersion<=FORMAT))err(`対応していない形式バージョンです（${x.formatVersion}）。新しい版のアプリで書き出したファイルかもしれません`);
+[['challenges','課題'],['sessions','セッション'],['history','挑戦履歴']].forEach(([k,l])=>{if(!Array.isArray(x[k]))err(`${l}（${k}）の一覧がありません`)});
+if(errs.length)return errs;
+let entry=(h,p,global)=>{if(!isObj(h))return err(p+'：形式が不正です');if(!DATE_RE.test(h.date))err(p+'：日付が不正です（'+h.date+'）');if(!isCount(h.tries))err(p+'：トライ数が不正です');if(!RESULTS.includes(h.result))err(p+'：結果が不正です（'+h.result+'）');if(!isText(h.memo))err(p+'：メモが文字列ではありません');if(global&&(typeof h.challengeId!=='string'||!h.challengeId))err(p+'：課題idがありません')};
+let ids=new Set();
+x.challenges.forEach((c,i)=>{let p=`課題${i+1}件目`;if(!isObj(c))return err(p+'：形式が不正です');p+=`（${c.name||'名前なし'}）`;
+if(typeof c.id!=='string'||!c.id)err(p+'：idがありません');else if(ids.has(c.id))err(p+'：idが重複しています');else ids.add(c.id);
+if(typeof c.name!=='string'||!c.name.trim())err(p+'：課題名がありません');
+if(!TYPES.includes(c.type))err(p+'：種類が不正です（'+c.type+'）');
+else if(c.type==='テープ'?!TAPE_GRADES.includes(c.grade):!(MONTHLY_GRADES.includes(c.grade)||/^([1-9]|1\d|20)$/.test(c.grade)))err(p+'：グレードが不正です（'+c.grade+'）');
+if(!STATUSES.includes(c.status))err(p+'：状態が不正です（'+c.status+'）');
+if(!isCount(c.tries))err(p+'：トライ数が不正です');
+if(c.month&&!MONTH_RE.test(c.month))err(p+'：開催月が不正です（'+c.month+'）');
+['first','send'].forEach(k=>{if(c[k]&&!DATE_RE.test(c[k]))err(p+'：日付が不正です（'+c[k]+'）')});
+if(!isText(c.memo))err(p+'：メモが文字列ではありません');
+let hist=c.history??c.logs;if(hist!==undefined){if(!Array.isArray(hist))err(p+'：履歴が一覧になっていません');else hist.forEach((h,j)=>entry(h,`${p}の履歴${j+1}件目`))}});
+x.sessions.forEach((s,i)=>{let p=`セッション${i+1}件目`;if(!isObj(s))return err(p+'：形式が不正です');if(s.id===undefined||s.id===null||s.id==='')err(p+'：idがありません');if(!DATE_RE.test(s.date))err(p+'：日付が不正です（'+s.date+'）');if(!isCount(s.duration))err(p+'：時間が不正です');if(!isText(s.note))err(p+'：メモが文字列ではありません')});
+x.history.forEach((h,i)=>entry(h,`挑戦履歴${i+1}件目`,true));
+return errs}
+function importData(){let f=$('importFile').files[0];if(!f){alert('復元するJSONファイルを選んでください。');return}let r=new FileReader();r.onload=()=>{let x;try{x=JSON.parse(r.result)}catch(e){alert('JSONとして読み込めませんでした。BARE HANDS LOGのJSONバックアップを選んでください。');return}
+let errs=validateBackup(x);if(errs.length){alert('バックアップの中身に問題があるため復元を中止しました（現在のデータは変更していません）。\n\n'+errs.slice(0,8).map(m=>'・'+m).join('\n')+(errs.length>8?`\n…ほか${errs.length-8}件`:''));return}
+let when=x.exportedAt&&!isNaN(new Date(x.exportedAt))?new Date(x.exportedAt).toLocaleString('ja-JP'):'不明';
+if(!confirm(`このバックアップで現在のデータを置き換えますか？\n\n書き出し日時：${when}\n課題：${x.challenges.length}件\nセッション：${x.sessions.length}件\n挑戦履歴：${x.history.length}件`))return;
+let d={challenges:x.challenges.map(c=>({...c,month:c.month||'',first:c.first||'',send:c.send||'',memo:c.memo||'',tries:Number(c.tries)||0,history:(c.history??c.logs??[]).map(h=>({...h,tries:Number(h.tries)||0}))})),sessions:x.sessions.map(s=>({...s,id:String(s.id),duration:Number(s.duration)||0,note:s.note||''})),history:x.history.map(h=>({...h,tries:Number(h.tries)||0}))};
+d.challenges.forEach(c=>delete c.logs);linkHistories(d);data=d;persist();alert('バックアップを復元しました。')};r.readAsText(f)}
+function wipeData(){if(confirm('すべての課題・セッション・履歴を削除します。この操作は取り消せません。')&&confirm('本当に削除しますか？先にバックアップすることをおすすめします。')){data={challenges:[],sessions:[],history:[]};persist()}}
+$('sDate').value=today();$('tDate').value=today();$('tDate').max=today();$('cMonth').value=monthNow();gradeOptions();renderAll();window.addEventListener('resize',()=>{if($('home').classList.contains('active')){drawMonthly();drawGrades()}});
+</script>
+</body></html>
